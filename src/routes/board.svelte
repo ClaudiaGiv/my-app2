@@ -1,12 +1,12 @@
 <script context="module">
 	export async function load({ fetch, session }) {
-		console.log('Board session', session);
-		if (!session.user) {
-			return {
-				status: 302,
-				redirect: '/login'
-			};
-		}
+		// console.log('Board session', session);
+		// if (!session.user) {
+		// 	return {
+		// 		status: 302,
+		// 		redirect: '/login'
+		// 	};
+		// }
 		const res = await fetch('/api/board1');
 		if (res.ok)
 			return {

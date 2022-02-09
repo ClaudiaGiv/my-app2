@@ -1,0 +1,79 @@
+<script>
+	import { session } from '$app/stores';
+	import { goto } from '$app/navigation';
+	import Alert from '$lib/alert.svelte';
+
+	$: user = $session.user;
+	let responseError = '';
+
+	async function logout() {
+		const res = await fetch('api/auth', {
+			method: 'PUT'
+		});
+		const json = await res.json();
+		if (res.ok) {
+			console.debug('Header sign out response: ', json);
+			$session.user = '';
+			goto('/login');
+		} else {
+			responseError = json.error.message;
+			console.error(responseError);
+		}
+	}
+</script>
+
+<div class="header-2">
+	<nav class="bg-white py-2 md:py-4">
+		<div class="container px-4 mx-auto md:flex md:items-center">
+			<div class="flex justify-between items-center ">
+				<a href="#" class="font-bold text-xl text-indigo-600">Value Factory</a>
+				<button
+					class="border border-solid border-gray-600 px-3 py-1 rounded text-gray-600 opacity-50 hover:opacity-75 md:hidden"
+					id="navbar-toggle"
+				>
+					<i class="fas fa-bars" />
+				</button>
+			</div>
+
+			<div class="hidden md:flex flex-col md:flex-row md:ml-auto mt-3 md:mt-0" id="navbar-collapse">
+				<a href="/" class="p-2 lg:px-4 md:mx-2 text-white rounded bg-indigo-600">Home</a>
+				<a
+					href="/board"
+					class="p-2 lg:px-4 md:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300"
+					>Board</a
+				>
+				{#if $session.user}
+					<a
+						href="/board-gql"
+						class="p-2 lg:px-4 md:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300"
+						>Board GQL</a
+					>
+					<a
+						href="/password-reset"
+						class="p-2 lg:px-4 md:mx-2 text-indigo-600 text-center border border-transparent rounded hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-300"
+						>{user.email}</a
+					>
+					<button
+						on:click={logout}
+						class="p-2 lg:px-4 md:mx-2 text-indigo-600 text-center border border-solid border-indigo-600 rounded hover:bg-indigo-600 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1"
+						>Sign out</button
+					>
+				{:else}
+					<a
+						href="/login"
+						class="p-2 lg:px-4 md:mx-2 text-indigo-600 text-center border border-transparent rounded hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-300"
+						>Login</a
+					>
+					<a
+						href="/register"
+						class="p-2 lg:px-4 md:mx-2 text-indigo-600 text-center border border-solid border-indigo-600 rounded hover:bg-indigo-600 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1"
+						>Signup</a
+					>
+				{/if}
+			</div>
+		</div>
+	</nav>
+	{#if responseError}
+		<Alert type={'error'} message={responseError} />
+	{/if}
+</div>

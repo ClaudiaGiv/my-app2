@@ -1,25 +1,22 @@
 import cookie from 'cookie';
-import { v4 as uuid } from '@lukeed/uuid';
 
-export const handle = async ({ event, resolve }) => {
-	console.log('--------event--------')
-	console.log(event)
-	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
-	event.locals.userid = cookies.userid || uuid();
+export async function handle({ event, resolve }) {
 
+	// code here happends before the endpoint or page is called
+	const cookies = await cookie.parse(event.request.headers.get('cookie') || '');
+	event.locals.user = await cookies.user
+	console.debug('Hooks cookies: ', cookies);
 	const response = await resolve(event);
 
-	if (!cookies.userid) {
-		// if this is the first time the user has visited this app,
-		// set a cookie so that we recognise them when they return
-		response.headers.set(
-			'set-cookie',
-			cookie.serialize('userid', event.locals.userid, {
-				path: '/',
-				httpOnly: true
-			})
-		);
-	}
-
+	// code here happens after the endpoint or page is called
 	return response;
-};
+}
+// This function takes the request object and returns a session object that is accessible on the client
+// and therefore must be safe to expose to users. It runs whenever SvelteKit server-renders a page.
+export function getSession(event) {
+	return event?.locals?.user
+		? {
+			user: JSON.parse(event.locals.user).details
+		}
+		: {};
+}

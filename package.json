@@ -24,6 +24,8 @@
   },
   "type": "module",
   "dependencies": {
-    "cookie": "^0.4.2"
+    "cookie": "^0.4.2",
+    "graphql-combine-query": "^1.2.3",
+    "svelte-dnd-action": "^0.9.14"
   }
 }

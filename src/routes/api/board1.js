@@ -1,7 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { send, getAuthKey, buildResponseObject, buildGqlRequestBody, FAUNA_KEY } from './api-utils';
-import { BOARD_BY_USER_QUERY, CREATE_DEFAULT_BOARD_MUTATION } from '../../graphql/board';
+import { BOARD_BY_USER_QUERY, CREATE_DEFAULT_BOARD_MUTATION } from '../../graphql/board1';
 
 export async function get(req) {
 	console.debug('Board GET');

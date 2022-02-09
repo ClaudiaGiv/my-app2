@@ -1,4 +1,4 @@
-import { EMPTY_UPDATE_BOARD_MUTATION } from '../../graphql/board';
+import { EMPTY_UPDATE_BOARD_MUTATION } from '../../graphql/board1';
 import combineQuery from 'graphql-combine-query';
 import { print } from 'graphql/language/printer.js';
 

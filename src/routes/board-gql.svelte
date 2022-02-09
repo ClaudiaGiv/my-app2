@@ -6,12 +6,12 @@
 
 	export async function load({ fetch, session }) {
 		console.log('Board-gql session', session);
-		if (!session.user) {
-			return {
-				status: 302,
-				redirect: '/login'
-			};
-		}
+		// if (!session.user) {
+		// 	return {
+		// 		status: 302,
+		// 		redirect: '/login'
+		// 	};
+		// }
 		userId = session.user._id;
 		const res = await fetch('/api/board?userId=' + userId);
 		if (res.ok) {
